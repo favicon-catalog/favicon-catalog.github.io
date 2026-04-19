@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "npm"
 
       - name: Install dependencies
@@ -79,7 +79,8 @@ jobs:
           make -C ./snapshot test
 
       - name: Build snapshot artifacts
-        run: node ./snapshot/src/cli.js release --fallback-root ../favicons-repo
+        working-directory: ./snapshot
+        run: node ./src/cli.js release --fallback-root ../favicons-repo
 
       - name: Update published repository contents
         run: |
