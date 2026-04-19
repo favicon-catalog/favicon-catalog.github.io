@@ -79,7 +79,8 @@ jobs:
           make -C ./snapshot test
 
       - name: Build snapshot artifacts
-        run: node ./snapshot/src/cli.js release --fallback-root ../favicons-repo
+        working-directory: ./snapshot
+        run: node ./src/cli.js release --fallback-root ../favicons-repo
 
       - name: Update published repository contents
         run: |
