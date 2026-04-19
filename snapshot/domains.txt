@@ -1,0 +1,146 @@
+# Top-level lines declare parent hosts.
+# Lines starting with "- " declare subdomains for the most recent parent host.
+# Keep parent hosts sorted alphabetically.
+# Keep each parent's subdomains sorted alphabetically.
+
+airbnb.com
+alibaba.com
+amazon.com
+apple.com
+- apps.apple.com
+asana.com
+atlassian.com
+bbc.com
+bing.com
+booking.com
+box.com
+casio.com
+chatgpt.com
+claude.com
+cloudflare.com
+cncf.io
+- landscape.cncf.io
+cnn.com
+costco.com
+coupang.com
+dailymotion.com
+danawa.com
+daum.net
+- 100.daum.net
+- dic.daum.net
+dcinside.com
+dell.com
+discord.com
+disney.com
+disneyplus.com
+disneystore.com
+dropbox.com
+duckduckgo.com
+ebay.com
+etsy.com
+expedia.com
+facebook.com
+figma.com
+github.blog
+github.careers
+github.com
+- docs.github.com
+- enterprise.github.com
+- pages.github.com
+githubstatus.com
+gitlab.com
+google.com
+- chromewebstore.google.com
+- cloud.google.com
+- play.google.com
+grafana.com
+hulu.com
+ibm.com
+icloud.com
+ikea.com
+instagram.com
+intel.com
+intercom.com
+js.org
+jsdelivr.com
+kakaocorp.com
+kt.com
+librewiki.net
+linkedin.com
+live.com
+mcdonalds.com
+mediawiki.org
+medium.com
+meta.ai
+meta.com
+metacareers.com
+microsoft.com
+- learn.microsoft.com
+namu.wiki
+naver.com
+- cafe.naver.com
+- dict.naver.com
+- land.naver.com
+- map.naver.com
+- pay.naver.com
+- terms.naver.com
+netflix.com
+nexon.com
+nintendo.com
+notion.com
+npmjs.com
+nvidia.com
+nytimes.com
+openai.com
+oracle.com
+pagerduty.com
+pandora.com
+paypal.com
+pinterest.com
+playstation.com
+rakuten.com
+reddit.com
+redhat.com
+samsung.com
+servicenow.com
+shopify.com
+sk.com
+slack.com
+snapchat.com
+spotify.com
+square.com
+stackoverflow.com
+steampowered.com
+stripe.com
+supabase.com
+target.com
+telegram.org
+temu.com
+tiktok.com
+time.is
+twitch.tv
+twitter.com
+uber.com
+unpkg.com
+velog.io
+vercel.com
+vimeo.com
+walmart.com
+weather.com
+whatsapp.com
+wikidata.org
+wikimedia.org
+- commons.wikimedia.org
+- developer.wikimedia.org
+- meta.wikimedia.org
+- wikitech.wikimedia.org
+wikimediafoundation.org
+wikipedia.org
+wiktionary.org
+wise.com
+x.com
+xbox.com
+yahoo.com
+youtube.com
+zetawiki.com
+zoom.us

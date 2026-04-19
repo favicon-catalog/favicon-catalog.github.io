@@ -1,0 +1,164 @@
+name: Publish snapshot
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.17.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Resolve snapshot version
+        id: version
+        run: |
+          set -euo pipefail
+          snapshot_version="$(tr -d '\n\r' < ./snapshot/SNAPSHOT_VERSION)"
+          echo "snapshot_version=${snapshot_version}" >>"$GITHUB_OUTPUT"
+          echo "tag=v${snapshot_version}" >>"$GITHUB_OUTPUT"
+
+      - name: Validate snapshot source layout
+        run: |
+          test -d ./snapshot
+          test -f ./snapshot/SNAPSHOT_VERSION
+          test -f ./snapshot/Makefile
+          test -f ./snapshot/.nojekyll
+          test -f ./snapshot/src/cli.js
+          test -f ./snapshot/domains.txt
+          echo "Move snapshot source files under ./snapshot before enabling full publish."
+
+      - name: Checkout published favicons repository
+        uses: actions/checkout@v4
+        with:
+          path: favicons-repo
+          repository: favicon-catalog/favicons
+          token: ${{ secrets.FAVICONS_REPO_TOKEN }}
+          fetch-depth: 0
+
+      - name: Resolve published repository state
+        id: repo_state
+        env:
+          GH_TOKEN: ${{ secrets.FAVICONS_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if git -C favicons-repo rev-parse --verify "refs/tags/${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            tag_exists=true
+          else
+            tag_exists=false
+          fi
+
+          if gh release view "${{ steps.version.outputs.tag }}" --repo favicon-catalog/favicons >/dev/null 2>&1; then
+            release_exists=true
+          else
+            release_exists=false
+          fi
+
+          echo "tag_exists=${tag_exists}" >>"$GITHUB_OUTPUT"
+          echo "release_exists=${release_exists}" >>"$GITHUB_OUTPUT"
+
+      - name: Validate snapshot source
+        run: make -C ./snapshot check
+
+      - name: Build snapshot artifacts
+        run: node ./snapshot/src/cli.js release --fallback-root ../favicons-repo
+
+      - name: Update published repository contents
+        run: |
+          set -euo pipefail
+          find ./favicons-repo -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a ./snapshot/dist/. ./favicons-repo/
+          cp ./snapshot/README.md ./favicons-repo/README.md
+          cp ./snapshot/.nojekyll ./favicons-repo/.nojekyll
+          cp -L ./LICENSE ./favicons-repo/LICENSE
+
+      - name: Commit and push published snapshot
+        id: publish
+        run: |
+          set -euo pipefail
+
+          git -C favicons-repo config user.name "github-actions[bot]"
+          git -C favicons-repo config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C favicons-repo add -A
+
+          if git -C favicons-repo diff --cached --quiet; then
+            echo "changed=false" >>"$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "${{ steps.repo_state.outputs.tag_exists }}" = "true" ]; then
+            echo "Snapshot contents changed, but tag ${{ steps.version.outputs.tag }} already exists." >&2
+            echo "Bump snapshot/SNAPSHOT_VERSION before publishing new artifact content." >&2
+            exit 1
+          fi
+
+          git -C favicons-repo commit -m "Publish ${{ steps.version.outputs.tag }}"
+          git -C favicons-repo push origin HEAD:main
+          echo "changed=true" >>"$GITHUB_OUTPUT"
+
+      - name: Create tag
+        if: steps.repo_state.outputs.tag_exists != 'true'
+        run: |
+          set -euo pipefail
+
+          git -C favicons-repo tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
+          git -C favicons-repo push origin "refs/tags/${{ steps.version.outputs.tag }}"
+
+      - name: Create GitHub release
+        if: steps.repo_state.outputs.release_exists != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.FAVICONS_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --repo favicon-catalog/favicons \
+            --verify-tag \
+            --title "${{ steps.version.outputs.tag }}" \
+            --notes "Published snapshot ${{ steps.version.outputs.tag }}."
+
+      - name: Write summary
+        run: |
+          {
+            echo "## Published Snapshot"
+            echo
+            echo "- Snapshot version: \`${{ steps.version.outputs.snapshot_version }}\`"
+            echo "- Tag: \`${{ steps.version.outputs.tag }}\`"
+            if [ "${{ steps.publish.outputs.changed }}" = "true" ]; then
+              echo "- Main branch update: pushed"
+            else
+              echo "- Main branch update: no content changes"
+            fi
+            if [ "${{ steps.repo_state.outputs.tag_exists }}" = "true" ]; then
+              echo "- Tag action: skipped existing tag"
+            else
+              echo "- Tag action: created"
+            fi
+            if [ "${{ steps.repo_state.outputs.release_exists }}" = "true" ]; then
+              echo "- Release action: skipped existing release"
+            else
+              echo "- Release action: created"
+            fi
+            echo "- Publish repository: \`favicon-catalog/favicons\`"
+            echo "- Index: \`https://cdn.jsdelivr.net/gh/favicon-catalog/favicons@${{ steps.version.outputs.tag }}/index.json\`"
+            echo "- Pages: \`https://favicon-catalog.github.io/favicons/index.json\`"
+          } >>"$GITHUB_STEP_SUMMARY"

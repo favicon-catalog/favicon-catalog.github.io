@@ -3,10 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.17.1",
   "description": "Catalog website for domain favicons",
   "scripts": {
-    "site": "rm -rf dist/site-assets && vite build",
-    "site-preview": "vite --host 127.0.0.1 --port 4173"
+    "check": "pnpm build && make -C ./snapshot check",
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "build": "rm -rf dist/site-assets && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "snapshot:check": "make -C ./snapshot check",
+    "snapshot:validate": "make -C ./snapshot validate",
+    "snapshot:test": "make -C ./snapshot test",
+    "snapshot:release": "make -C ./snapshot release",
+    "snapshot:release-sample": "make -C ./snapshot release-sample",
+    "snapshot:sizes": "make -C ./snapshot sizes",
+    "site": "pnpm build",
+    "site-preview": "pnpm dev"
   },
   "engines": {
     "node": ">=20"

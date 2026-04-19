@@ -1,7 +1,10 @@
-# Favicon Catalog Frontend
+# Favicon Catalog
 
-This repository (`favicon-catalog.github.io`) hosts the web catalog UI for domain favicons, published precisely at the root URL `https://favicon-catalog.github.io/`. 
-It renders data consumed from the external data repository `favicons`.
+This repository (`favicon-catalog.github.io`) is the main source repository for the Favicon Catalog project.
+It hosts the catalog site at `https://favicon-catalog.github.io/` and owns the project documentation, site code, and published snapshot integration.
+
+Snapshot data is published from the [favicons](https://github.com/favicon-catalog/favicons) repository.
+Snapshot source files also live under [`snapshot/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) inside this repository.
 
 ## How To Use
 
@@ -10,6 +13,18 @@ Browse the published catalog at:
 ```text
 https://favicon-catalog.github.io/
 ```
+
+To consume published snapshot data directly, use:
+
+```text
+https://cdn.jsdelivr.net/gh/favicon-catalog/favicons@<tag>/index.json
+https://cdn.jsdelivr.net/gh/favicon-catalog/favicons@<tag>/<first-char>/<domain>/favicon.png
+https://raw.githubusercontent.com/favicon-catalog/favicons/<tag>/index.json
+https://favicon-catalog.github.io/favicons/index.json
+https://favicon-catalog.github.io/favicons/<first-char>/<domain>/favicon.png
+```
+
+Use `index.json` to enumerate published domains. Use the representative PNG path when you need one stable favicon image per domain.
 
 The catalog provides search, pagination, and direct links to each domain's representative PNG and manifest.
 It also provides per-domain detail pages, JSON dialogs for `index.json` and per-domain manifests, and direct download/copy actions.
@@ -30,13 +45,57 @@ Current catalog behavior:
 For local development, install dependencies and start the Vite dev server:
 
 ```bash
-npm install
-npm run site-preview
+pnpm install
+pnpm dev
 ```
 
 That serves the catalog at `http://127.0.0.1:4173/`. By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
 
 To use local snapshots, test the `VITE_SNAPSHOT_BASE_URL` environment variable.
+
+Common site commands:
+
+```bash
+pnpm dev
+pnpm build
+pnpm preview
+pnpm check
+```
+
+## Maintain Snapshots
+
+The snapshot source of truth lives under `snapshot/`.
+
+Compatibility aliases are also available:
+
+```bash
+pnpm site
+pnpm site-preview
+```
+
+Use these commands when working on snapshot data and release logic:
+
+```bash
+make -C snapshot check
+make -C snapshot release
+```
+
+Common maintenance entry points:
+
+- domain list: [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt)
+- snapshot version: [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
+- snapshot commands: [`snapshot/Makefile`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/Makefile)
+- pipeline code: [`snapshot/src/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/src/cli.js)
+
+To add or update domains, edit [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) and open a pull request. Run `make -C snapshot check` first if you want to validate the snapshot input locally.
+
+The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/README.md), and its published license is copied from the repository root [LICENSE](/root/ws/favicon-catalog/favicon-catalog.github.io/LICENSE).
+
+Snapshot release model:
+
+- source pipeline under `snapshot/`
+- published artifacts in `favicon-catalog/favicons`
+- snapshot version owned by [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
 
 ## Catalog UI
 
@@ -61,3 +120,7 @@ Example:
 ```text
 https://favicon-catalog.github.io/apps.apple.com
 ```
+
+## Notice
+
+Favicons referenced by this project may be trademarks of their respective owners, and no affiliation with or endorsement by those owners is implied.

@@ -1,0 +1,9 @@
+export const DEFAULT_DIST_DIR = "dist";
+export const DEFAULT_INPUT_FILE = "domains.txt";
+export const KNOWN_EXTS = [".ico", ".png", ".svg", ".gif", ".jpg", ".webp"];
+export const MANIFEST_FILENAME = "manifest.json";
+export const MANIFEST_VERSION = 4;
+export const PREFERENCE_ORDER = ["html", "root", "gstatic"];
+export const VALID_DISCOVERY_ORIGINS = new Set(PREFERENCE_ORDER);
+export const GSTATIC_SIZES = [16, 32, 48, 64, 128, 256];
+export const GSTATIC_BASE_URL = "https://t0.gstatic.com/faviconV2";
