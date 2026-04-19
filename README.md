@@ -59,12 +59,13 @@ Common site commands:
 pnpm dev
 pnpm build
 pnpm preview
-pnpm check
 ```
 
 ## Maintain Snapshots
 
 The snapshot source of truth lives under `snapshot/`.
+
+Run `make check` before opening a pull request. It performs the same repository-level checks enforced in CI.
 
 Compatibility aliases are also available:
 
@@ -76,7 +77,8 @@ pnpm site-preview
 Use these commands when working on snapshot data and release logic:
 
 ```bash
-make -C snapshot check
+make -C snapshot validate
+make -C snapshot test
 make -C snapshot release
 ```
 
@@ -87,7 +89,7 @@ Common maintenance entry points:
 - snapshot commands: [`snapshot/Makefile`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/Makefile)
 - pipeline code: [`snapshot/src/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/src/cli.js)
 
-To add or update domains, edit [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) and open a pull request. Run `make -C snapshot check` first if you want to validate the snapshot input locally.
+To add or update domains, edit [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) and open a pull request. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
 
 The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/README.md), and its published license is copied from the repository root [LICENSE](/root/ws/favicon-catalog/favicon-catalog.github.io/LICENSE).
 

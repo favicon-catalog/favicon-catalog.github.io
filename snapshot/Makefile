@@ -1,8 +1,4 @@
-.PHONY: check validate test release release-sample sizes
-
-check:
-	node ./src/cli.js validate
-	node ./src/test-domain-parsing.js
+.PHONY: validate test release release-sample sizes
 
 validate:
 	node ./src/cli.js validate
