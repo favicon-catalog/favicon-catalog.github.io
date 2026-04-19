@@ -6,6 +6,40 @@ It hosts the catalog site at `https://favicon-catalog.github.io/` and owns the p
 Snapshot data is published from the [favicons](https://github.com/favicon-catalog/favicons) repository.
 Snapshot source files also live under [`snapshot/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) inside this repository.
 
+## CI/CD Workflows
+
+Currently, snapshot publishing is triggered **manually**, while site deployment happens automatically when code is merged to the `main` branch.
+
+### 1. Validate Workflow
+Runs on PRs and pushes to `main` to ensure code builds and snapshot pipelines are healthy.
+
+```mermaid
+flowchart TD
+    PR([Pull Request]) --> Val[Build Site & Validate Snapshot Pipeline]
+    PushMain([Push to main]) --> Val
+```
+
+### 2. Deploy Workflow
+Automatically publishes the site to GitHub Pages whenever changes hit the `main` branch.
+
+```mermaid
+flowchart TD
+    PushMainDeploy([Push to main]) --> BuildSite[Build Site Assets]
+    BuildSite --> Pages[Deploy to GitHub Pages]
+```
+
+### 3. Publish Workflow
+Currently requires a **manual trigger** to publish new favicons snapshot data to the external repository.
+
+```mermaid
+flowchart TD
+    Manual([Manual / workflow_dispatch]) --> CheckTag{Tag Exists?}
+    CheckTag -- No --> Gen[Generate Snapshot Artifacts]
+    Gen --> Push[Push to favicon-catalog/favicons]
+    Push --> TagReq[Create GitHub Tag & Release]
+    CheckTag -- Yes --> Skip[Skip Publish]
+```
+
 ## How To Use
 
 Browse the published catalog at:
@@ -45,33 +79,33 @@ Current catalog behavior:
 For local development, install dependencies and start the Vite dev server:
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
-That serves the catalog at `http://127.0.0.1:4173/`. By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
+That serves the catalog at `http://127.0.0.1:8080/`. By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
 
 To use local snapshots, test the `VITE_SNAPSHOT_BASE_URL` environment variable.
 
 Common site commands:
 
 ```bash
-pnpm dev
-pnpm build
-pnpm preview
+npm run dev
+npm run build
+npm run preview
 ```
 
 ## Maintain Snapshots
 
 The snapshot source of truth lives under `snapshot/`.
 
-Run `make check` before opening a pull request. It performs the same repository-level checks enforced in CI.
+Run `make check` before opening a pull request. It performs the same repository-level checks enforced by the `Validate` workflow in CI.
 
 Compatibility aliases are also available:
 
 ```bash
-pnpm site
-pnpm site-preview
+npm run site
+npm run site-preview
 ```
 
 Use these commands when working on snapshot data and release logic:

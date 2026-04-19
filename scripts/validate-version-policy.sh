@@ -5,15 +5,10 @@ BASE_SHA="${BASE_SHA:-}"
 HEAD_SHA="${HEAD_SHA:-HEAD}"
 
 if [ -z "$BASE_SHA" ]; then
-  if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
-    BASE_SHA="$(git rev-parse HEAD^)"
-  else
-    echo "BASE_SHA is required when the repository has fewer than two commits." >&2
-    exit 1
-  fi
+  changed_files="$(git diff --name-only HEAD)"
+else
+  changed_files="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
 fi
-
-changed_files="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
 echo "$changed_files"
 
 if [ -z "$changed_files" ]; then

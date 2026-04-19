@@ -28,20 +28,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.17.1
+          cache: 'npm'
           
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
         
       - name: Build site
         env:
           VITE_SNAPSHOT_BASE_URL: https://favicon-catalog.github.io/favicons/
-        run: pnpm build
+        run: npm run build
         
       - name: Setup Pages
         uses: actions/configure-pages@v4

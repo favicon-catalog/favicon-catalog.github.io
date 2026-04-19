@@ -6,7 +6,7 @@ check: validate-site
 	./scripts/validate-version-policy.sh
 
 validate-site:
-	pnpm build
+	npm run build
 
 validate-snapshot:
 	make -C snapshot validate
