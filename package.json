@@ -1,0 +1,20 @@
+{
+  "name": "favicon-catalog.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Catalog website for domain favicons",
+  "scripts": {
+    "site": "rm -rf dist/site-assets && vite build",
+    "site-preview": "vite --host 127.0.0.1 --port 4173"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "vite": "^8.0.8"
+  },
+  "dependencies": {
+    "@mdi/js": "^7.4.47"
+  }
+}
