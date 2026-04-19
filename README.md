@@ -73,7 +73,7 @@ npm install
 npm run dev
 ```
 
-That serves the catalog at `http://127.0.0.1:8080/`. By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
+That serves the catalog locally (usually at `http://localhost:5173/`). By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
 
 To use local snapshots, test the `VITE_SNAPSHOT_BASE_URL` environment variable.
 
@@ -90,13 +90,6 @@ npm run preview
 The snapshot source of truth lives under `snapshot/`.
 
 Run `make check` before opening a pull request. It performs the same repository-level checks enforced by the `Validate` workflow in CI.
-
-Compatibility aliases are also available:
-
-```bash
-npm run site
-npm run site-preview
-```
 
 Use these commands when working on snapshot data and release logic:
 
