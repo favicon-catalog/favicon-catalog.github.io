@@ -6,40 +6,6 @@ It hosts the catalog site at `https://favicon-catalog.github.io/` and owns the p
 Snapshot data is published from the [favicons](https://github.com/favicon-catalog/favicons) repository.
 Snapshot source files also live under [`snapshot/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) inside this repository.
 
-## CI/CD Workflows
-
-Currently, snapshot publishing is triggered **manually**, while site deployment happens automatically when code is merged to the `main` branch.
-
-### 1. Validate Workflow
-Runs on PRs and pushes to `main` to ensure code builds and snapshot pipelines are healthy.
-
-```mermaid
-flowchart TD
-    PR([Pull Request]) --> Val[Build Site & Validate Snapshot Pipeline]
-    PushMain([Push to main]) --> Val
-```
-
-### 2. Deploy Workflow
-Automatically publishes the site to GitHub Pages whenever changes hit the `main` branch.
-
-```mermaid
-flowchart TD
-    PushMainDeploy([Push to main]) --> BuildSite[Build Site Assets]
-    BuildSite --> Pages[Deploy to GitHub Pages]
-```
-
-### 3. Publish Workflow
-Currently requires a **manual trigger** to publish new favicons snapshot data to the external repository.
-
-```mermaid
-flowchart TD
-    Manual([Manual / workflow_dispatch]) --> CheckTag{Tag Exists?}
-    CheckTag -- No --> Gen[Generate Snapshot Artifacts]
-    Gen --> Push[Push to favicon-catalog/favicons]
-    Push --> TagReq[Create GitHub Tag & Release]
-    CheckTag -- Yes --> Skip[Skip Publish]
-```
-
 ## How To Use
 
 Browse the published catalog at:
@@ -73,6 +39,30 @@ Current catalog behavior:
 - clickable URLs inside JSON dialogs
 - related domain navigation in the detail view
 - brand logo and site favicon provided by `site/public/logo.svg`
+
+## Catalog UI
+
+The published catalog is a static site built from `site/` and served via GitHub Pages at root domain.
+
+Main interactions:
+
+- search field with list/detail view toggle
+- detail pages with route-backed URLs
+- manifest trigger from the detail header
+- related domains section in detail view
+- JSON dialogs render URL strings as clickable links that open in a new tab
+
+Detail routes use the published base path plus the encoded domain:
+
+```text
+/<domain>
+```
+
+Example:
+
+```text
+https://favicon-catalog.github.io/apps.apple.com
+```
 
 ## Local Development
 
@@ -133,30 +123,45 @@ Snapshot release model:
 - published artifacts in `favicon-catalog/favicons`
 - snapshot version owned by [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
 
-## Catalog UI
+## CI/CD Workflows
 
-The published catalog is a static site built from `site/` and served via GitHub Pages at root domain.
+Our GitHub Actions workflows are designed around the standard lifecycle of a change: from proposing a change via a Pull Request to automatically releasing it on merge.
 
-Main interactions:
+### 1. On Pull Request
+When you open or update a Pull Request, the **Validate** workflow runs automatically to ensure your changes are safe to merge.
 
-- search field with list/detail view toggle
-- detail pages with route-backed URLs
-- manifest trigger from the detail header
-- related domains section in detail view
-- JSON dialogs render URL strings as clickable links that open in a new tab
+- **Site Build Check:** Verifies that the catalog site and its Vite configuration build successfully.
+- **Snapshot Validation:** Runs internal checks (equivalent to `make check`) on the snapshot pipeline to ensure data integrity.
+- **Version Policy Enforcement:** Ensures proper version tracking based on what you modified:
+  - Changes to the catalog site (`site/` or `vite.config.js`) require a version bump in `package.json`.
+  - Changes to snapshot data (`snapshot/domains.txt`, `snapshot/src/`, etc.) require a version bump in `snapshot/SNAPSHOT_VERSION`.
 
-Detail routes use the published base path plus the encoded domain:
-
-```text
-/<domain>
+```mermaid
+flowchart TD
+    PR([PR opened or updated]) --> ValPolicy[Validate version policy]
+    ValPolicy -->|site changed| Pkg[Require package.json bump]
+    ValPolicy -->|snapshot changed| Snap[Require snapshot version bump]
+    PR --> BuildSite[Build catalog site]
+    PR --> ValSnap[Validate snapshot pipeline]
 ```
 
-Example:
+### 2. On Merge to `main`
+Once your Pull Request is approved and merged into the `main` branch (or code is pushed directly), the repository automatically tests the `main` branch, deploys the site, and publishes a new snapshot if needed.
 
-```text
-https://favicon-catalog.github.io/apps.apple.com
+- **Final Validation:** Runs the site build and snapshot validation checks again to ensure the `main` branch remains stable.
+- **Site Deployment:** The **Deploy** workflow builds the static catalog site and publishes it directly to [GitHub Pages](https://favicon-catalog.github.io/).
+- **Snapshot Publishing:** The **Publish** workflow checks the current `snapshot/SNAPSHOT_VERSION`. If that version tag hasn't been published yet to the external [`favicon-catalog/favicons`](https://github.com/favicon-catalog/favicons) repository, it generates the new snapshot artifacts and creates a new release automatically. (Publishing can also be triggered manually via `workflow_dispatch` if needed).
+
+```mermaid
+flowchart TD
+    Merge([PR merged to main]) --> ValMain[Validate site and snapshots]
+    Merge --> BuildPages[Build site]
+    BuildPages --> DeployPages[Deploy to GitHub Pages]
+    Merge -->|new snapshot version| Gen[Build snapshot artifacts]
+    Gen --> Push[Push to favicon-catalog/favicons]
+    Push --> Release[Create release]
 ```
 
-## Notice
+## Notes
 
 Favicons referenced by this project may be trademarks of their respective owners, and no affiliation with or endorsement by those owners is implied.

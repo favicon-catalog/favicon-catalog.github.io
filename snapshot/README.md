@@ -6,7 +6,7 @@ This repository contains published favicon snapshot artifacts only.
 - Browse the catalog UI at [https://favicon-catalog.github.io/](https://favicon-catalog.github.io/).
 - Treat this repository as a public snapshot endpoint, not a development repository.
 
-## How To Use
+## Endpoints
 
 Use version-pinned URLs for stable integrations:
 
@@ -16,11 +16,11 @@ https://cdn.jsdelivr.net/gh/favicon-catalog/favicons@<tag>/<first-char>/<domain>
 https://raw.githubusercontent.com/favicon-catalog/favicons/<tag>/index.json
 ```
 
-GitHub Pages serves the latest published snapshot:
+Use GitHub Pages for the latest published snapshot:
 
 ```text
 https://favicon-catalog.github.io/favicons/index.json
 https://favicon-catalog.github.io/favicons/<first-char>/<domain>/favicon.png
 ```
 
-If you need the UI, browse the catalog site linked above. For development, contribution guidelines, and architecture details, use the source repository.
+For the UI, use the catalog site linked above. For development and documentation, use the source repository.
