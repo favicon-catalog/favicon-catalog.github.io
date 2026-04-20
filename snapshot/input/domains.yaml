@@ -1,4 +1,5 @@
 - name: airbnb.com
+- name: akamai.com
 - name: alibaba.com
 - name: almalinux.org
 - name: amazon.com
@@ -23,6 +24,7 @@
 - name: booking.com
 - name: box.com
 - name: britannica.com
+- name: broadcom.com
 - name: brunch.co.kr
 - name: bytedance.com
 - name: canva.com
@@ -33,6 +35,7 @@
   group: OpenAI
 - name: chevrolet.com
 - name: chosun.com
+- name: cisco.com
 - name: cj.net
 - name: cjenm.com
 - name: claude.ai
@@ -51,12 +54,15 @@
     - hani.co.kr
     - kbs.co.kr
     - oliveyoung.co.kr
+    - posco.co.kr
 - name: coca-cola.com
+- name: coinbase.com
 - name: costco.com
 - name: coupang.com
 - name: coursera.org
 - name: dailymotion.com
 - name: danawa.com
+- name: datadoghq.com
 - name: daum.net
   subdomains:
     - 100.daum.net
@@ -64,12 +70,14 @@
 - name: dcinside.com
 - name: dell.com
 - name: deloitte.com
+- name: delta.com
 - name: dev.to
 - name: dior.com
 - name: discord.com
 - name: disney.com
 - name: disneyplus.com
 - name: disneystore.com
+- name: dominos.com
 - name: dropbox.com
 - name: duckduckgo.com
 - name: dzen.ru
@@ -77,21 +85,26 @@
 - name: ebay.com
 - name: edx.org
 - name: elastic.co
+- name: enuri.com
 - name: espn.com
 - name: etcd.io
 - name: etsy.com
 - name: expedia.com
+- name: expediagroup.com
 - name: f5.com
 - name: facebook.com
   group: Meta
 - name: fandom.com
+- name: fedex.com
 - name: fifa.com
 - name: figma.com
 - name: firefox.com
 - name: flickr.com
 - name: fmkorea.com
 - name: ford.com
+- name: foxcorporation.com
 - name: foxnews.com
+- name: gartner.com
 - name: ge.com
 - name: ghibli.jp
 - name: github.blog
@@ -122,6 +135,8 @@
 - name: grafana.com
 - name: hbo.com
 - name: helm.sh
+- name: hilton.com
+- name: homedepot.com
 - name: hotels.com
 - name: hp.com
 - name: hulu.com
@@ -137,6 +152,7 @@
 - name: intel.com
 - name: intercom.com
 - name: jetbrains.com
+- name: jnj.com
 - name: join-lemmy.org
 - name: jpmorgan.com
 - name: jpmorganchase.com
@@ -152,10 +168,14 @@
 - name: khanacademy.org
 - name: kia.com
 - name: killercoda.com
+- name: kimberly-clark.com
 - name: knowyourmeme.com
+- name: kraftheinz.com
 - name: kt.com
+- name: ktng.com
 - name: kubernetes.io
 - name: lego.com
+- name: lg.com
 - name: lguplus.com
 - name: librewiki.net
 - name: line.me
@@ -166,8 +186,11 @@
   group: Microsoft
   subdomains:
     - teams.live.com
+- name: lowes.com
 - name: mail.ru
 - name: mariadb.org
+- name: marriott.com
+- name: mastercard.com
 - name: mcdonalds.com
 - name: mediawiki.org
   group: Wikimedia
@@ -180,11 +203,13 @@
 - name: metacareers.com
   group: Meta
 - name: mi.com
+- name: micron.com
 - name: microsoft.com
   group: Microsoft
   subdomains:
     - learn.microsoft.com
 - name: mlb.com
+- name: modernatx.com
 - name: mozilla.org
   subdomains:
     - developer.mozilla.org
@@ -204,6 +229,7 @@
     - pay.naver.com
     - terms.naver.com
     - tv.naver.com
+- name: netapp.com
 - name: netflix.com
 - name: nexon.com
 - name: nginx.org
@@ -229,32 +255,46 @@
   subdomains:
     - docs.oracle.com
 - name: oreilly.com
+- name: otis.com
 - name: pagerduty.com
 - name: pandora.com
 - name: paypal.com
 - name: pearlabyss.com
+- name: pepsi.com
+- name: pepsico.com
+- name: pfizer.com
 - name: picsart.com
 - name: pinterest.com
 - name: playstation.com
+- name: pmi.com
 - name: postgresql.org
 - name: prometheus.io
 - name: qiita.com
+- name: qualcomm.com
+- name: quasarzone.com
 - name: quora.com
 - name: rakuten.com
+- name: ralphlauren.com
 - name: reddit.com
 - name: redhat.com
+- name: rockwellautomation.com
 - name: rockylinux.org
 - name: rolex.com
 - name: rust-lang.org
+- name: salesforce.com
 - name: samsung.com
+- name: sandisk.com
+- name: seagate.com
 - name: servicenow.com
 - name: shopify.com
 - name: similarweb.com
 - name: sk.com
+- name: skhynix.com
 - name: slack.com
 - name: snapchat.com
 - name: spacex.com
 - name: spotify.com
+- name: square-enix.com
 - name: square.com
 - name: stackoverflow.com
 - name: starbucks.com
@@ -270,6 +310,7 @@
 - name: temu.com
 - name: tesla.com
 - name: threads.com
+- name: ti.com
 - name: tiktok.com
 - name: time.is
 - name: tistory.com
@@ -289,16 +330,21 @@
 - name: urbandictionary.com
 - name: velog.io
 - name: vercel.com
+- name: verisign.com
+- name: verizon.com
 - name: vevo.com
 - name: viber.com
 - name: vimeo.com
+- name: visa.com
 - name: vite.dev
 - name: vk.com
 - name: vultr.com
 - name: w3schools.com
 - name: walmart.com
+- name: warnerbros.com
 - name: weather.com
 - name: wechat.com
+- name: westerndigital.com
 - name: whatsapp.com
   group: Meta
 - name: wikidata.org
@@ -319,6 +365,7 @@
 - name: wise.com
 - name: wordpress.com
 - name: wordpress.org
+- name: workday.com
 - name: wsj.com
 - name: x.com
 - name: xbox.com
@@ -331,6 +378,7 @@
 - name: yelp.com
 - name: youtube.com
   group: Google
+- name: yum.com
 - name: zetawiki.com
 - name: zoom.com
 - name: zoom.us

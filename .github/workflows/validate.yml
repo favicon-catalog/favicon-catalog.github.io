@@ -53,7 +53,7 @@ jobs:
           make -C snapshot validate
           make -C snapshot test
 
-  version-policy:
+  version:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
@@ -63,8 +63,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate version policy
+      - name: Validate version
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: ./scripts/validate-version-policy.sh
+        run: ./scripts/validate-version.sh

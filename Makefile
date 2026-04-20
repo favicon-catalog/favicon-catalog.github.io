@@ -7,4 +7,4 @@ check:
 	npm run build
 	$(MAKE) -C snapshot validate
 	$(MAKE) -C snapshot test
-	./scripts/validate-version-policy.sh
+	./scripts/validate-version.sh

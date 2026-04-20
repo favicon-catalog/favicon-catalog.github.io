@@ -4,7 +4,7 @@ This repository (`favicon-catalog.github.io`) is the main source repository for 
 It hosts the catalog site at `https://favicon-catalog.github.io/` and owns the project documentation, site code, and published snapshot integration.
 
 Snapshot data is published from the [favicons](https://github.com/favicon-catalog/favicons) repository.
-Snapshot source files also live under [`snapshot/input/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml) inside this repository.
+Snapshot source files also live under [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml) inside this repository.
 
 ## How To Use
 
@@ -89,7 +89,7 @@ npm run preview
 
 The snapshot source of truth lives under `snapshot/`.
 
-Run `make check` before opening a pull request. It performs the same repository-level checks enforced by the `Validate` workflow in CI.
+Run `make check` before opening a pull request. It runs the local site build, snapshot validation, snapshot tests, and local version checks in one command.
 
 Use these commands when working on snapshot data and release logic:
 
@@ -103,20 +103,20 @@ make -C snapshot release
 
 Common maintenance entry points:
 
-- domain config: [`snapshot/input/domains.yaml`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml)
-- snapshot version: [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
-- snapshot commands: [`snapshot/Makefile`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/Makefile)
-- pipeline code: [`snapshot/src/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/src/cli.js)
+- domain config: [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml)
+- snapshot version: [`snapshot/SNAPSHOT_VERSION`](snapshot/SNAPSHOT_VERSION)
+- snapshot commands: [`snapshot/Makefile`](snapshot/Makefile)
+- pipeline code: [`snapshot/src/`](snapshot/src/cli.js)
 
-To add a domain, prefer `make -C snapshot add <domain>`. If the hostname belongs under an existing parent domain, it is appended as a sorted subdomain entry; otherwise it is inserted as a new sorted parent domain. The command also normalizes hostnames and rejects duplicates before rewriting [`snapshot/input/domains.yaml`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml). For more complex edits, you can still update that file manually. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
+To add a domain, prefer `make -C snapshot add <domain>`. If the hostname belongs under an existing parent domain, it is appended as a sorted subdomain entry; otherwise it is inserted as a new sorted parent domain. The command also normalizes hostnames and rejects duplicates before rewriting [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml). For more complex edits, you can still update that file manually. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
 
-The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/README.md), and its published license is copied from the repository root [LICENSE](/root/ws/favicon-catalog/favicon-catalog.github.io/LICENSE).
+The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](snapshot/README.md), and its published license is copied from the repository root [LICENSE](LICENSE).
 
 Snapshot release model:
 
 - source pipeline under `snapshot/`
 - published artifacts in `favicon-catalog/favicons`
-- snapshot version owned by [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
+- snapshot version owned by [`snapshot/SNAPSHOT_VERSION`](snapshot/SNAPSHOT_VERSION)
 
 ## CI/CD Workflows
 
@@ -126,16 +126,16 @@ Our GitHub Actions workflows are designed around the standard lifecycle of a cha
 When you open or update a Pull Request, the **Validate** workflow runs automatically to ensure your changes are safe to merge.
 
 - **Site Build Check:** Verifies that the catalog site and its Vite configuration build successfully.
-- **Snapshot Validation:** Runs internal checks (equivalent to `make check`) on the snapshot pipeline to ensure data integrity.
+- **Snapshot Validation:** Runs snapshot-specific checks equivalent to `make -C snapshot validate` and `make -C snapshot test`.
 - **Version Policy Enforcement:** Ensures proper version tracking based on what you modified:
   - Changes to the catalog site (`site/` or `vite.config.js`) require a version bump in `package.json`.
   - Changes to snapshot data (`snapshot/input/domains.yaml`, `snapshot/src/`, etc.) require a version bump in `snapshot/SNAPSHOT_VERSION`.
 
 ```mermaid
 flowchart TD
-    PR([PR opened or updated]) --> ValPolicy[Validate version policy]
-    ValPolicy -->|site changed| Pkg[Require package.json bump]
-    ValPolicy -->|snapshot changed| Snap[Require snapshot version bump]
+    PR([PR opened or updated]) --> ValVersion[Validate version]
+    ValVersion -->|site changed| Pkg[Require package.json bump]
+    ValVersion -->|snapshot changed| Snap[Require snapshot version bump]
     PR --> BuildSite[Build catalog site]
     PR --> ValSnap[Validate snapshot pipeline]
 ```

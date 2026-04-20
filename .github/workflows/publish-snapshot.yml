@@ -37,11 +37,10 @@ jobs:
         run: |
           test -d ./snapshot
           test -f ./snapshot/SNAPSHOT_VERSION
-          test -f ./Makefile
+          test -f ./snapshot/Makefile
           test -f ./snapshot/.nojekyll
           test -f ./snapshot/src/cli.js
           test -f ./snapshot/input/domains.yaml
-          echo "Move snapshot source files under ./snapshot before enabling full publish."
 
       - name: Checkout published favicons repository
         uses: actions/checkout@v4
