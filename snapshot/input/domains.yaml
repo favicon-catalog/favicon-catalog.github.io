@@ -5,6 +5,7 @@
 - name: amazon.com
   subdomains:
     - aws.amazon.com
+- name: americanexpress.com
 - name: apple.com
   group: Apple
   subdomains:
@@ -17,7 +18,6 @@
 - name: atlassian.com
 - name: baidu.com
 - name: bbc.com
-- name: bet.br
 - name: bilibili.com
 - name: bing.com
 - name: bloomberg.com
@@ -28,6 +28,7 @@
 - name: brunch.co.kr
 - name: bytedance.com
 - name: canva.com
+- name: carrier.com
 - name: cartier.com
 - name: casio.com
 - name: chanel.com
@@ -40,21 +41,11 @@
 - name: cjenm.com
 - name: claude.ai
 - name: claude.com
-- name: clearlinux.org
 - name: cloudflare.com
 - name: cncf.io
   subdomains:
     - landscape.cncf.io
 - name: cnn.com
-- name: co.jp
-  subdomains:
-    - yahoo.co.jp
-- name: co.kr
-  subdomains:
-    - hani.co.kr
-    - kbs.co.kr
-    - oliveyoung.co.kr
-    - posco.co.kr
 - name: coca-cola.com
 - name: coinbase.com
 - name: costco.com
@@ -133,6 +124,7 @@
     - meet.google.com
     - play.google.com
 - name: grafana.com
+- name: hani.co.kr
 - name: hbo.com
 - name: helm.sh
 - name: hilton.com
@@ -165,6 +157,7 @@
     - tech.kakao.com
 - name: kakaocorp.com
   group: Kakao
+- name: kbs.co.kr
 - name: khanacademy.org
 - name: kia.com
 - name: killercoda.com
@@ -231,6 +224,7 @@
     - tv.naver.com
 - name: netapp.com
 - name: netflix.com
+- name: nexon.co.kr
 - name: nexon.com
 - name: nginx.org
 - name: nicovideo.jp
@@ -242,15 +236,13 @@
 - name: nvidia.com
 - name: nytimes.com
 - name: office.com
+- name: oliveyoung.co.kr
 - name: olympics.com
 - name: openai.com
   group: OpenAI
 - name: opensearch.org
 - name: openstack.org
 - name: opentelemetry.io
-- name: or.kr
-  subdomains:
-    - visitkorea.or.kr
 - name: oracle.com
   subdomains:
     - docs.oracle.com
@@ -267,6 +259,7 @@
 - name: pinterest.com
 - name: playstation.com
 - name: pmi.com
+- name: posco.co.kr
 - name: postgresql.org
 - name: prometheus.io
 - name: qiita.com
@@ -282,6 +275,9 @@
 - name: rolex.com
 - name: rust-lang.org
 - name: salesforce.com
+- name: samsonite.com
+  subdomains:
+    - shop.samsonite.com
 - name: samsung.com
 - name: sandisk.com
 - name: seagate.com
@@ -336,6 +332,7 @@
 - name: viber.com
 - name: vimeo.com
 - name: visa.com
+- name: visitkorea.or.kr
 - name: vite.dev
 - name: vk.com
 - name: vultr.com
@@ -370,6 +367,7 @@
 - name: x.com
 - name: xbox.com
   group: Microsoft
+- name: yahoo.co.jp
 - name: yahoo.com
   subdomains:
     - finance.yahoo.com
