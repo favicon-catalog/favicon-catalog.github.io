@@ -57,3 +57,15 @@ if [ "$snapshot_changed" = "true" ] && [ "$snapshot_version_changed" != "true" ]
   echo "Snapshot files changed, but snapshot/SNAPSHOT_VERSION was not updated." >&2
   exit 1
 fi
+
+if [ "$snapshot_version_changed" = "true" ]; then
+  LATEST_RELEASE=$(curl -sL https://api.github.com/repos/favicon-catalog/favicons/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
+  if [ -n "$LATEST_RELEASE" ]; then
+    LATEST_VERSION="${LATEST_RELEASE#v}"
+    SNAPSHOT_VERSION=$(cat snapshot/SNAPSHOT_VERSION)
+    if ! npx -y semver -r ">$LATEST_VERSION" "$SNAPSHOT_VERSION" >/dev/null; then
+      echo "Error: snapshot/SNAPSHOT_VERSION ($SNAPSHOT_VERSION) must be greater than the latest release version ($LATEST_VERSION) in favicon-catalog/favicons." >&2
+      exit 1
+    fi
+  fi
+fi
