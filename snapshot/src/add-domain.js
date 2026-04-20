@@ -207,7 +207,11 @@ function inferredParentDomain(domain) {
   if (labels.length <= 2) {
     return null;
   }
-  return labels.slice(1).join(".");
+  const parentLabels = labels.slice(1);
+  if (parentLabels.length === 2 && ["co", "or", "go", "ac", "ne", "pe", "re", "com", "org", "net", "edu", "gov", "mil", "ed", "gob", "id"].includes(parentLabels[0])) {
+    return null;
+  }
+  return parentLabels.join(".");
 }
 
 export function insertDomainEntry(config, input) {

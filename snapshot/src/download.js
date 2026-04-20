@@ -1620,5 +1620,11 @@ export async function main(argv = []) {
     printIssueBlock("Unresolved download failures:", failedDomains);
   }
   console.log(`Done. Downloaded: ${downloaded}, kept: ${restored}, failed: ${failedDomains.length}/${targetDomains.length}`);
-  return failedDomains.length === 0 ? 0 : 1;
+
+  const failureRate = targetDomains.length > 0 ? failedDomains.length / targetDomains.length : 0;
+  if (failureRate > 0.05) {
+    console.log(`Failure rate ${(failureRate * 100).toFixed(1)}% exceeds the 5% threshold. Failing the build.`);
+    return 1;
+  }
+  return 0;
 }
