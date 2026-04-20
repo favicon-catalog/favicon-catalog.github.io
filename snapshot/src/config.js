@@ -1,5 +1,5 @@
 export const DEFAULT_DIST_DIR = "dist";
-export const DEFAULT_INPUT_FILE = "domains.txt";
+export const DEFAULT_DOMAINS_FILE = "input/domains.yaml";
 export const KNOWN_EXTS = [".ico", ".png", ".svg", ".gif", ".jpg", ".webp"];
 export const MANIFEST_FILENAME = "manifest.json";
 export const MANIFEST_VERSION = 4;

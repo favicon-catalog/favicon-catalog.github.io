@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import {
-  DEFAULT_INPUT_FILE,
+  DEFAULT_DOMAINS_FILE,
 } from "./config.js";
 import {
   inspectDomainFolder,
@@ -137,7 +137,7 @@ export function outputPathIsSafe(outputPath, inputPath, iconsPath) {
 export async function runExport({
   outputPath = DEFAULT_EXPORT_DIR,
   force = false,
-  inputPath = DEFAULT_INPUT_FILE,
+  inputPath = DEFAULT_DOMAINS_FILE,
   iconsPath,
   versionPath = DEFAULT_VERSION_FILE,
 } = {}) {

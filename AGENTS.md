@@ -13,7 +13,7 @@ Tech and implementation guidance:
 Use these commands for validation:
 
 ```bash
-npm run build
+make dev
 make check
 make -C snapshot validate
 make -C snapshot test
@@ -26,7 +26,7 @@ Version policy:
 
 - If you change the catalog site (`site/` or `vite.config.js`), bump `package.json`.
 - If you change snapshot sources under `snapshot/`, bump `snapshot/SNAPSHOT_VERSION`.
-- The version policy is enforced by `scripts/validate-version-policy.sh`.
+- The version policy is enforced by `scripts/validate-version-policy.sh` through `make check`.
 
 Publish model:
 

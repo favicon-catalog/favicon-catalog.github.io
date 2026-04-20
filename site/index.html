@@ -7,7 +7,7 @@
     <link rel="icon" href="%BASE_URL%logo.svg" type="image/svg+xml">
     <script>
       const savedTheme = window.localStorage.getItem("favicon-catalog-theme");
-      const preferredTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const preferredTheme = savedTheme || "light";
       document.documentElement.dataset.theme = preferredTheme;
     </script>
     <script type="module" src="./main.js"></script>

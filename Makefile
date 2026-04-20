@@ -1,16 +1,10 @@
-.PHONY: check validate-site validate-snapshot validate-version-policy
+.PHONY: check dev
 
-check: validate-site
-	make -C snapshot validate
-	make -C snapshot test
-	./scripts/validate-version-policy.sh
+dev:
+	npm run dev
 
-validate-site:
+check:
 	npm run build
-
-validate-snapshot:
-	make -C snapshot validate
-	make -C snapshot test
-
-validate-version-policy:
+	$(MAKE) -C snapshot validate
+	$(MAKE) -C snapshot test
 	./scripts/validate-version-policy.sh

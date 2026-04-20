@@ -4,7 +4,7 @@ This repository (`favicon-catalog.github.io`) is the main source repository for 
 It hosts the catalog site at `https://favicon-catalog.github.io/` and owns the project documentation, site code, and published snapshot integration.
 
 Snapshot data is published from the [favicons](https://github.com/favicon-catalog/favicons) repository.
-Snapshot source files also live under [`snapshot/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) inside this repository.
+Snapshot source files also live under [`snapshot/input/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml) inside this repository.
 
 ## How To Use
 
@@ -70,7 +70,7 @@ For local development, install dependencies and start the Vite dev server:
 
 ```bash
 npm install
-npm run dev
+make dev
 ```
 
 That serves the catalog locally (usually at `http://localhost:5173/`). By default, the application fetches snapshot data from `https://favicon-catalog.github.io/favicons/`. 
@@ -80,8 +80,8 @@ To use local snapshots, test the `VITE_SNAPSHOT_BASE_URL` environment variable.
 Common site commands:
 
 ```bash
-npm run dev
-npm run build
+make dev
+make check
 npm run preview
 ```
 
@@ -94,6 +94,8 @@ Run `make check` before opening a pull request. It performs the same repository-
 Use these commands when working on snapshot data and release logic:
 
 ```bash
+make -C snapshot add example.com
+make -C snapshot add docs.github.com
 make -C snapshot validate
 make -C snapshot test
 make -C snapshot release
@@ -101,12 +103,12 @@ make -C snapshot release
 
 Common maintenance entry points:
 
-- domain list: [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt)
+- domain config: [`snapshot/input/domains.yaml`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml)
 - snapshot version: [`snapshot/SNAPSHOT_VERSION`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/SNAPSHOT_VERSION)
 - snapshot commands: [`snapshot/Makefile`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/Makefile)
 - pipeline code: [`snapshot/src/`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/src/cli.js)
 
-To add or update domains, edit [`snapshot/domains.txt`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/domains.txt) and open a pull request. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
+To add a domain, prefer `make -C snapshot add <domain>`. If the hostname belongs under an existing parent domain, it is appended as a sorted subdomain entry; otherwise it is inserted as a new sorted parent domain. The command also normalizes hostnames and rejects duplicates before rewriting [`snapshot/input/domains.yaml`](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/input/domains.yaml). For more complex edits, you can still update that file manually. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
 
 The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](/root/ws/favicon-catalog/favicon-catalog.github.io/snapshot/README.md), and its published license is copied from the repository root [LICENSE](/root/ws/favicon-catalog/favicon-catalog.github.io/LICENSE).
 
@@ -127,7 +129,7 @@ When you open or update a Pull Request, the **Validate** workflow runs automatic
 - **Snapshot Validation:** Runs internal checks (equivalent to `make check`) on the snapshot pipeline to ensure data integrity.
 - **Version Policy Enforcement:** Ensures proper version tracking based on what you modified:
   - Changes to the catalog site (`site/` or `vite.config.js`) require a version bump in `package.json`.
-  - Changes to snapshot data (`snapshot/domains.txt`, `snapshot/src/`, etc.) require a version bump in `snapshot/SNAPSHOT_VERSION`.
+  - Changes to snapshot data (`snapshot/input/domains.yaml`, `snapshot/src/`, etc.) require a version bump in `snapshot/SNAPSHOT_VERSION`.
 
 ```mermaid
 flowchart TD
