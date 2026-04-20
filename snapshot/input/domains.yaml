@@ -5,6 +5,7 @@
 - name: amazon.com
   subdomains:
     - aws.amazon.com
+- name: americanexpress.com
 - name: apple.com
   group: Apple
   subdomains:
@@ -27,6 +28,7 @@
 - name: brunch.co.kr
 - name: bytedance.com
 - name: canva.com
+- name: carrier.com
 - name: cartier.com
 - name: casio.com
 - name: chanel.com
@@ -273,6 +275,9 @@
 - name: rolex.com
 - name: rust-lang.org
 - name: salesforce.com
+- name: samsonite.com
+  subdomains:
+    - shop.samsonite.com
 - name: samsung.com
 - name: sandisk.com
 - name: seagate.com

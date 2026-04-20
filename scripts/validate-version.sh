@@ -53,12 +53,7 @@ if [ "$catalog_changed" = "true" ] && [ "$package_changed" != "true" ]; then
   exit 1
 fi
 
-if [ "$snapshot_changed" = "true" ] && [ "$snapshot_version_changed" != "true" ]; then
-  echo "Snapshot files changed, but snapshot/SNAPSHOT_VERSION was not updated." >&2
-  exit 1
-fi
-
-if [ "$snapshot_version_changed" = "true" ]; then
+if [ "$snapshot_changed" = "true" ] || [ "$snapshot_version_changed" = "true" ]; then
   LATEST_RELEASE=$(curl -sL https://api.github.com/repos/favicon-catalog/favicons/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")')
   if [ -n "$LATEST_RELEASE" ]; then
     LATEST_VERSION="${LATEST_RELEASE#v}"
