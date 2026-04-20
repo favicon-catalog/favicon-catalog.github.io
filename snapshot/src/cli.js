@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import * as addDomain from "./add-domain.js";
 import * as countSizes from "./count-sizes.js";
 import * as download from "./download.js";
 import * as validate from "./validate.js";
@@ -10,6 +11,7 @@ function printHelp() {
   console.log("Usage: collection <command> [options]");
   console.log("");
   console.log("Commands:");
+  console.log("  add-domain <domain>  Add a domain to the domains input file");
   console.log("  validate   Validate the domains input file");
   console.log("  sizes      Count collected sizes across manifests");
   console.log("  release    Build the release snapshot in dist/");
@@ -23,6 +25,8 @@ async function main() {
     case "--help":
       printHelp();
       return 0;
+    case "add-domain":
+      return addDomain.main(rest);
     case "validate":
       return validate.main(rest);
     case "sizes":

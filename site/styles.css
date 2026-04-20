@@ -31,6 +31,15 @@ body {
 
 body {
   padding: 0;
+  position: relative;
+}
+
+header,
+main,
+footer,
+dialog {
+  position: relative;
+  z-index: 1;
 }
 
 .shell,
@@ -378,13 +387,13 @@ body {
 }
 
 .tile-media {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tile-preview {
   display: block;
-  width: auto;
-  height: auto;
   transition: transform 0.2s ease;
 }
 
@@ -449,8 +458,24 @@ tbody tr:hover {
   background: rgba(255, 255, 255, 0.45);
 }
 
+.preview-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+}
+
+.preview-frame-sm {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
 .preview {
   cursor: pointer;
+  display: block;
   width: auto;
   height: auto;
   max-width: 48px;
@@ -459,7 +484,6 @@ tbody tr:hover {
   border-radius: 0;
   border: 0;
   background: transparent;
-  object-fit: contain;
   padding: 0;
 }
 
@@ -807,6 +831,7 @@ html[data-theme="dark"] .icon-card {
     height: 48px;
     flex-basis: 48px;
   }
+
   th,
   td {
     padding: 12px;
@@ -865,11 +890,11 @@ html[data-theme="dark"] .icon-card {
 }
 
 .detail-title-preview {
-  width: 48px;
-  height: 48px;
+  width: auto;
+  height: auto;
+  max-width: 48px;
+  max-height: 48px;
   border-radius: 0;
-  object-fit: contain;
-  flex: 0 0 48px;
 }
 
 .detail-title-copy {
@@ -974,10 +999,10 @@ html[data-theme="dark"] .icon-card {
 }
 
 .related-domain-preview {
-  width: 24px;
-  height: 24px;
-  flex: 0 0 24px;
-  object-fit: contain;
+  width: auto;
+  height: auto;
+  max-width: 24px;
+  max-height: 24px;
 }
 
 .related-domain-label {

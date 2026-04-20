@@ -3,8 +3,9 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
 import zlib from "node:zlib";
+import YAML from "yaml";
 import {
-  DEFAULT_INPUT_FILE,
+  DEFAULT_DOMAINS_FILE,
   GSTATIC_BASE_URL,
   GSTATIC_SIZES,
   KNOWN_EXTS,
@@ -126,113 +127,149 @@ export function extractHost(entry) {
   }
 }
 
-export function parseDomainTree(lines) {
-  const domains = [];
-  const groups = [];
-  const seen = new Set();
+export function parseDomainConfig(value) {
   const issues = [];
   const duplicates = [];
   const parentOrderingIssues = [];
   const childOrderingIssues = [];
-  let currentParent = null;
-  let currentGroup = null;
+  const domains = [];
+  const entries = [];
+  const groups = [];
+  const groupLabels = new Map();
+  const seenDomains = new Set();
   let prevParent = null;
-  const prevChildByParent = new Map();
 
-  function addHost(host, lineNo) {
-    if (seen.has(host)) {
-      duplicates.push(`line ${lineNo}: duplicate domain '${host}'`);
+  if (!Array.isArray(value)) {
+    return {
+      domains,
+      entries,
+      groups,
+      groupLabels,
+      issues: ["input root must be a list"],
+    };
+  }
+
+  function addDomain(host, lineLabel) {
+    if (seenDomains.has(host)) {
+      duplicates.push(`${lineLabel}: duplicate domain '${host}'`);
       return false;
     }
-    seen.add(host);
+    seenDomains.add(host);
     domains.push(host);
     return true;
   }
 
-  lines.forEach((raw, index) => {
-    const lineNo = index + 1;
-    const stripped = raw.trim();
-    if (!stripped || stripped.startsWith("#")) {
+  function isDirectChildDomain(parent, child) {
+    return child.endsWith(`.${parent}`) && child.split(".").length === parent.split(".").length + 1;
+  }
+
+  function isWwwHost(host) {
+    return host.split(".")[0] === "www";
+  }
+
+  value.forEach((item, index) => {
+    const lineLabel = `entry ${index + 1}`;
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      issues.push(`${lineLabel}: each entry must be an object`);
       return;
     }
 
-    const leftTrimmed = raw.trimStart();
-    if (leftTrimmed.startsWith("- ")) {
-      if (currentParent === null) {
-        issues.push(`line ${lineNo}: subdomain entry must follow a parent domain`);
-        return;
-      }
-
-      const subdomainText = leftTrimmed.slice(2).trim();
-      const [rawSubdomain] = subdomainText.split(/\s+/, 1);
-      const host = extractHost(rawSubdomain);
-      if (!host) {
-        issues.push(`line ${lineNo}: invalid domain or URL '${rawSubdomain || subdomainText}'`);
-        return;
-      }
-      if (host === currentParent || !host.endsWith(`.${currentParent}`)) {
-        issues.push(`line ${lineNo}: subdomain '${host}' must be within parent domain '${currentParent}'`);
-        return;
-      }
-
-      const prevChild = prevChildByParent.get(currentParent) ?? null;
-      if (prevChild !== null && host < prevChild) {
-        childOrderingIssues.push(
-          `line ${lineNo}: subdomains for '${currentParent}' are not in alphabetical order ('${prevChild}' should not come before '${host}')`,
-        );
-      }
-      prevChildByParent.set(currentParent, host);
-      if (addHost(host, lineNo) && currentGroup !== null) {
-        currentGroup.subdomains.push(host);
-      }
-      return;
-    }
-
-    if (/^\s+/.test(raw)) {
-      issues.push(`line ${lineNo}: unexpected indentation before parent domain '${stripped}'`);
-      return;
-    }
-
-    const [domainText] = stripped.split(/\s+/, 1);
-    const host = extractHost(domainText);
+    const host = extractHost(item.name ?? "");
     if (!host) {
-      issues.push(`line ${lineNo}: invalid domain or URL '${domainText}'`);
+      issues.push(`${lineLabel}: invalid domain '${item.name ?? ""}'`);
+      return;
+    }
+    if (isWwwHost(host)) {
+      issues.push(`${lineLabel}: domain '${host}' must not use the 'www' subdomain`);
       return;
     }
 
     if (prevParent !== null && host < prevParent) {
       parentOrderingIssues.push(
-        `line ${lineNo}: parent domains are not in alphabetical order ('${prevParent}' should not come before '${host}')`,
+        `${lineLabel}: parent domains are not in alphabetical order ('${prevParent}' should not come before '${host}')`,
       );
     }
     prevParent = host;
-    currentParent = host;
-    currentGroup = { parent: host, subdomains: [] };
-    groups.push(currentGroup);
-    prevChildByParent.set(host, null);
-    addHost(host, lineNo);
+
+    const entry = { domain: host, group: null, subdomains: [] };
+    const domainGroup = { parent: host, subdomains: [] };
+    if (!addDomain(host, lineLabel)) {
+      return;
+    }
+
+    if ("group" in item && item.group !== undefined && item.group !== null) {
+      if (typeof item.group !== "string" || item.group.trim() === "") {
+        issues.push(`${lineLabel}: group must be a non-empty string`);
+      } else {
+        entry.group = item.group.trim();
+        if (!groupLabels.has(entry.group)) {
+          groupLabels.set(entry.group, []);
+        }
+        groupLabels.get(entry.group).push(host);
+      }
+    }
+
+    if ("subdomains" in item && item.subdomains !== undefined) {
+      if (!Array.isArray(item.subdomains)) {
+        issues.push(`${lineLabel}: subdomains must be a list`);
+      } else {
+        let prevChild = null;
+        for (const valueItem of item.subdomains) {
+          const child = extractHost(valueItem ?? "");
+          if (!child) {
+            issues.push(`${lineLabel}: invalid subdomain '${valueItem ?? ""}'`);
+            continue;
+          }
+          if (isWwwHost(child)) {
+            issues.push(`${lineLabel}: subdomain '${child}' must not use the 'www' subdomain`);
+            continue;
+          }
+          if (child === host || !child.endsWith(`.${host}`)) {
+            issues.push(`${lineLabel}: subdomain '${child}' must be within parent domain '${host}'`);
+            continue;
+          }
+          if (!isDirectChildDomain(host, child)) {
+            issues.push(`${lineLabel}: subdomain '${child}' must be a direct child of parent domain '${host}'`);
+            continue;
+          }
+          if (prevChild !== null && child < prevChild) {
+            childOrderingIssues.push(
+              `${lineLabel}: subdomains for '${host}' are not in alphabetical order ('${prevChild}' should not come before '${child}')`,
+            );
+          }
+          prevChild = child;
+          if (addDomain(child, lineLabel)) {
+            entry.subdomains.push(child);
+            domainGroup.subdomains.push(child);
+          }
+        }
+      }
+    }
+
+    entries.push(entry);
+    groups.push(domainGroup);
   });
 
   return {
     domains,
+    entries,
     groups,
+    groupLabels,
     issues: [...issues, ...duplicates, ...parentOrderingIssues, ...childOrderingIssues],
   };
 }
 
-export function parseDomains(lines) {
-  const result = parseDomainTree(lines);
-  return [result.domains, result.issues];
-}
-
-export async function validateInputFile(inputPath) {
+export async function validateInputFile(inputPath = DEFAULT_DOMAINS_FILE) {
   const text = await fs.readFile(inputPath, "utf8");
-  return parseDomains(text.split(/\r?\n/));
+  const parsed = YAML.parse(text);
+  const result = parseDomainConfig(parsed);
+  return [result.domains, result.issues, result];
 }
 
 async function readInputDomainTree(inputPath) {
   const text = await fs.readFile(inputPath, "utf8");
-  return parseDomainTree(text.split(/\r?\n/));
+  const parsed = YAML.parse(text);
+  return parseDomainConfig(parsed);
 }
 
 function normalizeRel(value) {
@@ -1478,7 +1515,7 @@ function parseDownloadArgs(argv) {
 
 export async function main(argv = []) {
   const args = parseDownloadArgs(argv);
-  const inputPath = DEFAULT_INPUT_FILE;
+  const inputPath = DEFAULT_DOMAINS_FILE;
   const fallbackIconsDir = args.fallbackRoot ? args.fallbackRoot : null;
   if (args.concurrency === null) {
     console.log(`--concurrency must be a positive integer (default: ${DEFAULT_CONCURRENCY})`);

@@ -118,7 +118,9 @@ function renderDomainButton(entry) {
 function renderDomainPreview(entry) {
   return [
     '<div class="domain">',
+    '<div class="preview-frame">',
     `<img class="preview" src="${entry.previewUrl}" alt="${escapeHtml(entry.domain)} representative favicon" loading="lazy" data-domain="${escapeHtml(entry.domain)}">`,
+    "</div>",
     renderDomainButton(entry),
     "</div>",
   ].join("");
@@ -128,7 +130,9 @@ function renderTileCard(entry) {
   return [
     `<article class="tile-panel" data-domain="${escapeHtml(entry.domain)}" title="${escapeHtml(entry.domain)}">`,
     '<div class="tile-media">',
+    '<div class="preview-frame">',
     `<img class="preview tile-preview" src="${entry.previewUrl}" alt="${escapeHtml(entry.domain)} representative favicon" loading="lazy">`,
+    "</div>",
     "</div>",
     "</article>",
   ].join("");
@@ -200,7 +204,9 @@ function renderRelatedDomains(entry, entries) {
     '<div class="related-domains">',
     relatedEntries.map((relatedEntry) => [
       `<button class="related-domain-button" type="button" data-domain="${escapeHtml(relatedEntry.domain)}" aria-label="Open ${escapeHtml(relatedEntry.domain)} details" title="Open details">`,
+      '<span class="preview-frame preview-frame-sm">',
       `<img class="related-domain-preview" src="${relatedEntry.previewUrl}" alt="" loading="lazy">`,
+      "</span>",
       `<span class="related-domain-label">${escapeHtml(relatedEntry.domain)}</span>`,
       "</button>",
     ].join("")).join(""),
@@ -211,7 +217,9 @@ function renderRelatedDomains(entry, entries) {
 
 function renderDetailHeader(entry) {
   return [
+    '<span class="preview-frame">',
     `<img class="detail-title-preview" src="${entry.previewUrl}" alt="" loading="lazy">`,
+    "</span>",
     `<span class="detail-title-copy">${escapeHtml(entry.domain)}</span>`,
     `<button class="detail-manifest-trigger" type="button" data-manifest-domain="${escapeHtml(entry.domain)}" aria-label="Open ${escapeHtml(entry.domain)} manifest" title="Open manifest">`,
     `<span class="detail-stats">${entry.icons.length} icon${entry.icons.length === 1 ? "" : "s"}</span>`,

@@ -10,10 +10,10 @@ Tech and implementation guidance:
 - Keep `site/` changes in vanilla JavaScript and plain CSS unless a framework change is explicitly requested.
 - Prefer Node core modules in `snapshot/` unless an external dependency is clearly justified.
 
-Use these commands for validation:
+Use these commands most often:
 
 ```bash
-npm run build
+make dev
 make check
 make -C snapshot validate
 make -C snapshot test
@@ -26,7 +26,7 @@ Version policy:
 
 - If you change the catalog site (`site/` or `vite.config.js`), bump `package.json`.
 - If you change snapshot sources under `snapshot/`, bump `snapshot/SNAPSHOT_VERSION`.
-- The version policy is enforced by `scripts/validate-version-policy.sh`.
+- Version checks are enforced in CI by the `version` job and can also be run locally through `make check`.
 
 Publish model:
 

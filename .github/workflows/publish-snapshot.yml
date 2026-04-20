@@ -40,8 +40,7 @@ jobs:
           test -f ./snapshot/Makefile
           test -f ./snapshot/.nojekyll
           test -f ./snapshot/src/cli.js
-          test -f ./snapshot/domains.txt
-          echo "Move snapshot source files under ./snapshot before enabling full publish."
+          test -f ./snapshot/input/domains.yaml
 
       - name: Checkout published favicons repository
         uses: actions/checkout@v4
@@ -75,8 +74,8 @@ jobs:
 
       - name: Validate snapshot source
         run: |
-          make -C ./snapshot validate
-          make -C ./snapshot test
+          make -C snapshot validate
+          make -C snapshot test
 
       - name: Build snapshot artifacts
         working-directory: ./snapshot

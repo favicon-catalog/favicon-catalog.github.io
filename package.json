@@ -1,6 +1,6 @@
 {
   "name": "favicon-catalog.github.io",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
   "description": "Catalog website for domain favicons",
@@ -16,6 +16,7 @@
     "vite": "^8.0.8"
   },
   "dependencies": {
-    "@mdi/js": "^7.4.47"
+    "@mdi/js": "^7.4.47",
+    "yaml": "^2.8.3"
   }
 }
