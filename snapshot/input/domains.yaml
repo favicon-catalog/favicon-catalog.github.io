@@ -4,11 +4,13 @@
 - name: alibaba.com
 - name: alipay.com
 - name: almalinux.org
+- name: alpinelinux.org
 - name: amazon.com
   subdomains:
     - aws.amazon.com
 - name: ameblo.jp
 - name: americanexpress.com
+- name: apache.org
 - name: apple.com
   group: Apple
   subdomains:
@@ -22,6 +24,8 @@
 - name: asahilinux.org
 - name: asana.com
 - name: atlassian.com
+- name: baemin.com
+- name: baeminconnect.com
 - name: baidu.com
 - name: bandai.com
 - name: bandainamco.co.jp
@@ -40,6 +44,7 @@
 - name: carrier.com
 - name: cartier.com
 - name: casio.com
+- name: centos.org
 - name: cert-manager.io
 - name: chanel.com
 - name: chaos-mesh.org
@@ -47,15 +52,20 @@
   group: OpenAI
 - name: chevrolet.com
 - name: chosun.com
+- name: cilium.io
 - name: cisco.com
 - name: cj.net
 - name: cjenm.com
 - name: claude.ai
 - name: claude.com
+- name: cloudera.com
+  subdomains:
+    - docs.cloudera.com
 - name: cloudflare.com
 - name: cncf.io
   subdomains:
     - landscape.cncf.io
+- name: cni.dev
 - name: cnn.com
 - name: coca-cola.com
 - name: coinbase.com
@@ -113,6 +123,7 @@
   group: Meta
 - name: fandom.com
 - name: fedex.com
+- name: fedoraproject.org
 - name: fifa.com
 - name: figma.com
 - name: firefox.com
@@ -127,6 +138,8 @@
 - name: gartner.com
 - name: ge.com
 - name: ghibli.jp
+- name: git-scm.com
+- name: gitea.com
 - name: github.blog
   group: GitHub
 - name: github.careers
@@ -168,6 +181,8 @@
 - name: homedepot.com
 - name: hotels.com
 - name: hp.com
+- name: hpe.com
+- name: huawei.io
 - name: hulu.com
 - name: hybecorp.com
 - name: hypebeast.com
@@ -193,6 +208,7 @@
 - name: jpmorganchase.com
 - name: js.org
 - name: jsdelivr.com
+- name: juniper.net
 - name: jype.com
 - name: kaggle.com
 - name: kakao.com
@@ -245,6 +261,7 @@
 - name: medium.com
 - name: melon.com
 - name: mermaid.ai
+- name: merriam-webster.com
 - name: meta.ai
   group: Meta
 - name: meta.com
@@ -261,6 +278,7 @@
   subdomains:
     - azure.microsoft.com
     - learn.microsoft.com
+- name: mirantis.com
 - name: mk.co.kr
 - name: mlb.com
 - name: modernatx.com
@@ -291,6 +309,7 @@
 - name: netflix.com
 - name: nexon.com
 - name: nginx.org
+- name: nhn.com
 - name: nicovideo.jp
 - name: nike.com
 - name: nintendo.com
@@ -305,11 +324,13 @@
 - name: openai.com
   group: OpenAI
 - name: opensearch.org
+- name: openshift.com
 - name: openstack.org
 - name: opentelemetry.io
 - name: oracle.com
   subdomains:
     - docs.oracle.com
+- name: oras.land
 - name: oreilly.com
 - name: otis.com
 - name: pagerduty.com
@@ -319,9 +340,11 @@
 - name: pepsi.com
 - name: pepsico.com
 - name: pfizer.com
+- name: php-fig.org
 - name: picsart.com
 - name: pingu.jp
 - name: pinterest.com
+- name: pizzahut.com
 - name: playstation.com
 - name: pmi.com
 - name: podman.io
@@ -380,10 +403,12 @@
 - name: tata.com
 - name: telegram.org
 - name: temu.com
+- name: tencent.com
 - name: tesla.com
 - name: thanos.io
 - name: threads.com
 - name: ti.com
+- name: tigera.io
 - name: tiktok.com
 - name: time.com
 - name: time.is
@@ -403,6 +428,8 @@
 - name: uniqlo.com
 - name: unpkg.com
 - name: urbandictionary.com
+- name: vcluster.com
+- name: velero.io
 - name: velog.io
 - name: vercel.com
 - name: verisign.com
@@ -442,6 +469,7 @@
 - name: wiktionary.org
   group: Wikimedia
 - name: wise.com
+- name: woowahan.com
 - name: wordpress.com
 - name: wordpress.org
 - name: workday.com
@@ -457,6 +485,7 @@
 - name: ycombinator.com
 - name: yelp.com
 - name: ygfamily.com
+- name: yogiyo.co.kr
 - name: yomiuri.co.jp
 - name: yonhapnewstv.co.kr
 - name: youtube.com

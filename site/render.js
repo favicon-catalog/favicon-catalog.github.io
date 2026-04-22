@@ -1,7 +1,6 @@
 import { mdiContentCopy, mdiDownload, mdiFileDocumentOutline } from "@mdi/js";
 
 const PAGE_SIZE_BY_VIEW = {
-  tile: 240,
   content: 25,
 };
 
@@ -257,16 +256,26 @@ function renderDetailView(entry, entries) {
 }
 
 function pageSizeForView(view) {
-  return PAGE_SIZE_BY_VIEW[view] || PAGE_SIZE_BY_VIEW.tile;
+  return PAGE_SIZE_BY_VIEW[view] || null;
+}
+
+function paginatesView(view) {
+  return Number.isInteger(pageSizeForView(view));
 }
 
 function totalPages(entries, view) {
   const pageSize = pageSizeForView(view);
+  if (!pageSize) {
+    return 1;
+  }
   return Math.max(1, Math.ceil(entries.length / pageSize));
 }
 
 function pageRange(entries, view, currentPage) {
   const pageSize = pageSizeForView(view);
+  if (!pageSize) {
+    return { pageSize: entries.length, start: 0, currentPage: 1 };
+  }
   const start = (currentPage - 1) * pageSize;
   return { pageSize, start, currentPage };
 }
@@ -396,11 +405,14 @@ export function renderApp(dom, state, actions) {
 
   const { pageSize, start } = pageRange(entries, state.view, currentPage);
   const visible = entries.slice(start, start + pageSize);
+  const paginated = paginatesView(state.view);
 
   dom.summary.textContent = `${entries.length} matched`;
   dom.pageSummary.textContent = entries.length === 0
     ? "No results"
-    : `Showing ${start + 1}-${start + visible.length} of ${entries.length}`;
+    : paginated
+      ? `Showing ${start + 1}-${start + visible.length} of ${entries.length}`
+      : `Showing all ${entries.length}`;
 
   dom.rowsNode.innerHTML = renderContentRows(visible);
   dom.tileViewNode.innerHTML = renderTileGrid(visible);
@@ -408,6 +420,10 @@ export function renderApp(dom, state, actions) {
   const hasResults = visible.length > 0;
   dom.emptyNode.hidden = hasResults;
   syncViewControls(dom, state, hasResults);
-  renderPager(dom, pages, currentPage, actions.changePage);
+  if (paginated) {
+    renderPager(dom, pages, currentPage, actions.changePage);
+  } else {
+    dom.pagerNode.innerHTML = "";
+  }
   renderIndexPanel(dom, state);
 }
