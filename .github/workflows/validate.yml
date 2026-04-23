@@ -64,6 +64,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Validate version
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
