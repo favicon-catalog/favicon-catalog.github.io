@@ -1,4 +1,4 @@
-version: 0.1.5
+version: 0.1.6
 domains:
 - name: adobe.com
 - name: airbnb.com
@@ -70,6 +70,7 @@ domains:
 - name: cni.dev
 - name: cnn.com
 - name: coca-cola.com
+- name: code.org
 - name: coinbase.com
 - name: containerd.io
 - name: coredns.io
@@ -170,6 +171,7 @@ domains:
   - meet.google.com
   - news.google.com
   - play.google.com
+- name: gov.kr
 - name: gq.com
 - name: grafana.com
 - name: grpc.io
@@ -281,6 +283,7 @@ domains:
   subdomains:
   - azure.microsoft.com
   - learn.microsoft.com
+- name: minecraft.net
 - name: mirantis.com
 - name: mk.co.kr
 - name: mlb.com
@@ -352,9 +355,14 @@ domains:
 - name: playstation.com
 - name: pmi.com
 - name: podman.io
+- name: pokemon.com
+- name: pokemongo.com
 - name: posco.co.kr
 - name: postgresql.org
+- name: president.go.kr
 - name: prometheus.io
+- name: pycon.org
+- name: python.org
 - name: qiita.com
 - name: qq.com
   subdomains:
@@ -362,6 +370,7 @@ domains:
 - name: qualcomm.com
 - name: quasarzone.com
 - name: quora.com
+- name: r-project.org
 - name: rakuten.com
 - name: ralphlauren.com
 - name: reddit.com
@@ -397,6 +406,7 @@ domains:
 - name: ssg.com
 - name: stackoverflow.com
 - name: starbucks.com
+- name: state.gov
 - name: steampowered.com
 - name: stripe.com
 - name: supabase.com
@@ -432,6 +442,7 @@ domains:
 - name: uniqlo.com
 - name: unpkg.com
 - name: urbandictionary.com
+- name: usa.gov
 - name: vcluster.com
 - name: velero.io
 - name: velog.io
@@ -457,6 +468,7 @@ domains:
 - name: westerndigital.com
 - name: whatsapp.com
   group: Meta
+- name: whitehouse.gov
 - name: wikidata.org
   group: Wikimedia
 - name: wikimedia.org
