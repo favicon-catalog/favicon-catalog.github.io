@@ -1,3 +1,4 @@
+import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DEFAULT_DOMAINS_FILE } from "./config.js";
 import { readSnapshotInputFile } from "./input-file.js";
