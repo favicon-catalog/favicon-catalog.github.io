@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { insertDomainEntry, parseAddDomainArgs } from "./add-domain.js";
 import { extractHost, parseDomainConfig } from "./download.js";
+import { parseSnapshotInputDocument, stringifySnapshotInputFile } from "./input-file.js";
 
 function testExtractHost() {
   assert.strictEqual(extractHost("github.com"), "github.com");
@@ -114,6 +115,65 @@ function testParseDomainConfigRejectsWwwSubdomain() {
   assert.deepStrictEqual(issues, [
     "entry 1: subdomain 'www.example.com' must not use the 'www' subdomain",
   ]);
+}
+
+function testParseSnapshotInputDocument() {
+  const parsed = parseSnapshotInputDocument({
+    version: "0.1.5",
+    domains: [{ name: "example.com" }],
+  });
+
+  assert.deepStrictEqual(parsed, {
+    version: "0.1.5",
+    domains: [{ name: "example.com" }],
+    issues: [],
+  });
+}
+
+function testParseSnapshotInputDocumentRejectsLegacyRoot() {
+  const parsed = parseSnapshotInputDocument([
+    { name: "example.com" },
+  ]);
+
+  assert.deepStrictEqual(parsed, {
+    version: null,
+    domains: null,
+    issues: ["input root must be an object"],
+  });
+}
+
+function testParseSnapshotInputDocumentRejectsInvalidVersion() {
+  const parsed = parseSnapshotInputDocument({
+    version: "latest",
+    domains: [],
+  });
+
+  assert.deepStrictEqual(parsed, {
+    version: "latest",
+    domains: [],
+    issues: ["version must be a valid semver string"],
+  });
+}
+
+function testStringifySnapshotInputFileUsesCanonicalYamlFormatting() {
+  const text = stringifySnapshotInputFile({
+    version: "0.1.5",
+    domains: [
+      {
+        name: "example.com",
+        subdomains: ["docs.example.com"],
+      },
+    ],
+  });
+
+  assert.strictEqual(text, [
+    "version: 0.1.5",
+    "domains:",
+    "- name: example.com",
+    "  subdomains:",
+    "  - docs.example.com",
+    "",
+  ].join("\n"));
 }
 
 function testInsertDomainEntry() {
@@ -234,6 +294,10 @@ function run() {
   testParseDomainConfigNestedSubdomainIssue();
   testParseDomainConfigRejectsWwwDomain();
   testParseDomainConfigRejectsWwwSubdomain();
+  testParseSnapshotInputDocument();
+  testParseSnapshotInputDocumentRejectsLegacyRoot();
+  testParseSnapshotInputDocumentRejectsInvalidVersion();
+  testStringifySnapshotInputFileUsesCanonicalYamlFormatting();
   testInsertDomainEntry();
   testInsertDomainEntryDuplicate();
   testInsertSubdomainIntoExistingParent();

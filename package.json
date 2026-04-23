@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format:domains": "node ./scripts/format-domains.js",
+    "check:domains-format": "node ./scripts/format-domains.js --check"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
@@ -17,6 +19,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "js-yaml": "^4.1.1",
     "yaml": "^2.8.3"
   }
 }

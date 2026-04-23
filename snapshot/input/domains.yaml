@@ -1,3 +1,5 @@
+version: 0.1.5
+domains:
 - name: adobe.com
 - name: airbnb.com
 - name: akamai.com
@@ -7,16 +9,16 @@
 - name: alpinelinux.org
 - name: amazon.com
   subdomains:
-    - aws.amazon.com
+  - aws.amazon.com
 - name: ameblo.jp
 - name: americanexpress.com
 - name: apache.org
 - name: apple.com
   group: Apple
   subdomains:
-    - apps.apple.com
-    - music.apple.com
-    - support.apple.com
+  - apps.apple.com
+  - music.apple.com
+  - support.apple.com
 - name: archive.org
 - name: archlinux.org
 - name: artifacthub.io
@@ -60,11 +62,11 @@
 - name: claude.com
 - name: cloudera.com
   subdomains:
-    - docs.cloudera.com
+  - docs.cloudera.com
 - name: cloudflare.com
 - name: cncf.io
   subdomains:
-    - landscape.cncf.io
+  - landscape.cncf.io
 - name: cni.dev
 - name: cnn.com
 - name: coca-cola.com
@@ -82,8 +84,8 @@
 - name: datadoghq.com
 - name: daum.net
   subdomains:
-    - 100.daum.net
-    - dic.daum.net
+  - 100.daum.net
+  - dic.daum.net
 - name: dcinside.com
 - name: debian.org
 - name: dell.com
@@ -147,9 +149,9 @@
 - name: github.com
   group: GitHub
   subdomains:
-    - docs.github.com
-    - enterprise.github.com
-    - pages.github.com
+  - docs.github.com
+  - enterprise.github.com
+  - pages.github.com
 - name: githubstatus.com
   group: GitHub
 - name: gitlab.com
@@ -161,12 +163,13 @@
 - name: google.com
   group: Google
   subdomains:
-    - chromewebstore.google.com
-    - cloud.google.com
-    - gemini.google.com
-    - meet.google.com
-    - news.google.com
-    - play.google.com
+  - chromewebstore.google.com
+  - cloud.google.com
+  - developers.google.com
+  - gemini.google.com
+  - meet.google.com
+  - news.google.com
+  - play.google.com
 - name: gq.com
 - name: grafana.com
 - name: grpc.io
@@ -214,7 +217,7 @@
 - name: kakao.com
   group: Kakao
   subdomains:
-    - tech.kakao.com
+  - tech.kakao.com
 - name: kakaobank.com
 - name: kakaocorp.com
   group: Kakao
@@ -247,7 +250,7 @@
 - name: live.com
   group: Microsoft
   subdomains:
-    - teams.live.com
+  - teams.live.com
 - name: logitech.com
 - name: lowes.com
 - name: mail.ru
@@ -271,20 +274,20 @@
 - name: mi.com
 - name: michelin.com
   subdomains:
-    - guide.michelin.com
+  - guide.michelin.com
 - name: micron.com
 - name: microsoft.com
   group: Microsoft
   subdomains:
-    - azure.microsoft.com
-    - learn.microsoft.com
+  - azure.microsoft.com
+  - learn.microsoft.com
 - name: mirantis.com
 - name: mk.co.kr
 - name: mlb.com
 - name: modernatx.com
 - name: mozilla.org
   subdomains:
-    - developer.mozilla.org
+  - developer.mozilla.org
 - name: musinsa.com
 - name: mysql.com
 - name: namu.wiki
@@ -295,15 +298,16 @@
 - name: naver.com
   group: Naver
   subdomains:
-    - cafe.naver.com
-    - chzzk.naver.com
-    - dict.naver.com
-    - finance.naver.com
-    - land.naver.com
-    - map.naver.com
-    - pay.naver.com
-    - terms.naver.com
-    - tv.naver.com
+  - blog.naver.com
+  - cafe.naver.com
+  - chzzk.naver.com
+  - dict.naver.com
+  - finance.naver.com
+  - land.naver.com
+  - map.naver.com
+  - pay.naver.com
+  - terms.naver.com
+  - tv.naver.com
 - name: nc.com
 - name: netapp.com
 - name: netflix.com
@@ -329,7 +333,7 @@
 - name: opentelemetry.io
 - name: oracle.com
   subdomains:
-    - docs.oracle.com
+  - docs.oracle.com
 - name: oras.land
 - name: oreilly.com
 - name: otis.com
@@ -354,7 +358,7 @@
 - name: qiita.com
 - name: qq.com
   subdomains:
-    - im.qq.com
+  - im.qq.com
 - name: qualcomm.com
 - name: quasarzone.com
 - name: quora.com
@@ -370,7 +374,7 @@
 - name: salesforce.com
 - name: samsonite.com
   subdomains:
-    - shop.samsonite.com
+  - shop.samsonite.com
 - name: samsung.com
 - name: sandisk.com
 - name: sankei.com
@@ -458,10 +462,10 @@
 - name: wikimedia.org
   group: Wikimedia
   subdomains:
-    - commons.wikimedia.org
-    - developer.wikimedia.org
-    - meta.wikimedia.org
-    - wikitech.wikimedia.org
+  - commons.wikimedia.org
+  - developer.wikimedia.org
+  - meta.wikimedia.org
+  - wikitech.wikimedia.org
 - name: wikimediafoundation.org
   group: Wikimedia
 - name: wikipedia.org
@@ -480,7 +484,7 @@
 - name: yahoo.co.jp
 - name: yahoo.com
   subdomains:
-    - finance.yahoo.com
+  - finance.yahoo.com
 - name: yandex.ru
 - name: ycombinator.com
 - name: yelp.com
