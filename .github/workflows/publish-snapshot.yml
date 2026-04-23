@@ -75,6 +75,7 @@ jobs:
         run: |
           make -C snapshot validate
           make -C snapshot test
+          npm run check:domains-format
 
       - name: Build snapshot artifacts
         working-directory: ./snapshot

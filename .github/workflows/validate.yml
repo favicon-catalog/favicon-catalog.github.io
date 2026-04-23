@@ -52,6 +52,7 @@ jobs:
         run: |
           make -C snapshot validate
           make -C snapshot test
+          npm run check:domains-format
 
   version:
     if: github.event_name == 'pull_request'
@@ -67,4 +68,4 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: ./scripts/validate-version.sh
+        run: node ./scripts/validate-version.js
