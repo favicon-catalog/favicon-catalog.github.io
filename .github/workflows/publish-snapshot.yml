@@ -29,14 +29,13 @@ jobs:
         id: version
         run: |
           set -euo pipefail
-          snapshot_version="$(tr -d '\n\r' < ./snapshot/SNAPSHOT_VERSION)"
+          snapshot_version="$(node --input-type=module -e 'import { readFileSync } from "node:fs"; import YAML from "yaml"; const parsed = YAML.parse(readFileSync("./snapshot/input/domains.yaml", "utf8")); process.stdout.write(typeof parsed?.version === "string" ? parsed.version.trim() : "");')"
           echo "snapshot_version=${snapshot_version}" >>"$GITHUB_OUTPUT"
           echo "tag=v${snapshot_version}" >>"$GITHUB_OUTPUT"
 
       - name: Validate snapshot source layout
         run: |
           test -d ./snapshot
-          test -f ./snapshot/SNAPSHOT_VERSION
           test -f ./snapshot/Makefile
           test -f ./snapshot/.nojekyll
           test -f ./snapshot/src/cli.js
@@ -76,6 +75,7 @@ jobs:
         run: |
           make -C snapshot validate
           make -C snapshot test
+          npm run check:domains-format
 
       - name: Build snapshot artifacts
         working-directory: ./snapshot
@@ -106,7 +106,7 @@ jobs:
 
           if [ "${{ steps.repo_state.outputs.tag_exists }}" = "true" ]; then
             echo "Snapshot contents changed, but tag ${{ steps.version.outputs.tag }} already exists." >&2
-            echo "Bump snapshot/SNAPSHOT_VERSION before publishing new artifact content." >&2
+            echo "Bump snapshot/input/domains.yaml version before publishing new artifact content." >&2
             exit 1
           fi
 

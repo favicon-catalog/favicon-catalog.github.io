@@ -1,8 +1,7 @@
-import { promises as fs } from "node:fs";
 import { parseArgs } from "node:util";
-import YAML from "yaml";
 import { DEFAULT_DOMAINS_FILE } from "./config.js";
 import { extractHost, parseDomainConfig } from "./download.js";
+import { readSnapshotInputFile, writeSnapshotInputFile } from "./input-file.js";
 
 function normalizeGroup(value) {
   if (value === undefined) {
@@ -309,25 +308,34 @@ export async function main(argv = []) {
   }
 
   const inputPath = DEFAULT_DOMAINS_FILE;
-  let parsed;
+  let snapshotInput;
   try {
-    const text = await fs.readFile(inputPath, "utf8");
-    parsed = YAML.parse(text);
+    snapshotInput = await readSnapshotInputFile(inputPath);
   } catch (error) {
     console.log(`Failed to read ${inputPath}: ${error.message}`);
+    return 1;
+  }
+  if (snapshotInput.issues.length > 0) {
+    console.log(`Cannot update invalid input file: ${inputPath}`);
+    for (const issue of snapshotInput.issues) {
+      console.log(`  - ${issue}`);
+    }
     return 1;
   }
 
   let updated;
   try {
-    updated = insertDomainEntry(parsed, args);
+    updated = insertDomainEntry(snapshotInput.domains, args);
   } catch (error) {
     console.log(error.message);
     return 1;
   }
 
   try {
-    await fs.writeFile(inputPath, YAML.stringify(updated), "utf8");
+    await writeSnapshotInputFile({
+      version: snapshotInput.version,
+      domains: updated,
+    }, inputPath);
   } catch (error) {
     console.log(`Failed to write ${inputPath}: ${error.message}`);
     return 1;

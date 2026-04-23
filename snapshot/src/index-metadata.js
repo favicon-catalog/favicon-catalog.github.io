@@ -1,20 +1,21 @@
-import { promises as fs } from "node:fs";
 import path from "node:path";
+import { DEFAULT_DOMAINS_FILE } from "./config.js";
+import { readSnapshotInputFile } from "./input-file.js";
 import { formatManifestJson, utcTimestamp } from "./json.js";
 
-export const DEFAULT_VERSION_FILE = "SNAPSHOT_VERSION";
+export const DEFAULT_VERSION_FILE = DEFAULT_DOMAINS_FILE;
 export const INDEX_METADATA_PATH = "index.json";
 
 const SEMVER_RE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[0-9A-Za-z-.]+)?(?:\+[0-9A-Za-z-.]+)?$/;
 
 export async function readSnapshotVersion(versionPath = DEFAULT_VERSION_FILE) {
-  let data;
+  let snapshotInput;
   try {
-    data = await fs.readFile(versionPath, "utf8");
+    snapshotInput = await readSnapshotInputFile(versionPath);
   } catch (error) {
     throw new Error(`failed to read ${versionPath}: ${error.message}`);
   }
-  const version = data.trim();
+  const version = snapshotInput.version ?? "";
   if (!SEMVER_RE.test(version)) {
     throw new Error(`snapshot version must be a valid semver string: ${versionPath}`);
   }

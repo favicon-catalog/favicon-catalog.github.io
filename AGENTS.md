@@ -25,14 +25,14 @@ If you change logic under `snapshot/src/`, also run `make -C snapshot test` and 
 Version policy:
 
 - If you change the catalog site (`site/` or `vite.config.js`), bump `package.json`.
-- If you change snapshot sources under `snapshot/`, bump `snapshot/SNAPSHOT_VERSION`.
+- If you change snapshot sources under `snapshot/`, bump the `version` field in `snapshot/input/domains.yaml`.
 - Version checks are enforced in CI by the `version` job and can also be run locally through `make check`.
 
 Publish model:
 
 - Pushes to `main` run validation and deploy the site to GitHub Pages.
 - Pushes to `main` also run snapshot publishing.
-- Snapshot publishing uses `snapshot/SNAPSHOT_VERSION` to decide the release tag.
+- Snapshot publishing uses the `version` field in `snapshot/input/domains.yaml` to decide the release tag.
 - Published snapshot artifacts are pushed to the external `favicon-catalog/favicons` repository.
 
 Important files:

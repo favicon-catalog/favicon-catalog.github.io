@@ -83,6 +83,7 @@ Common site commands:
 make dev
 make check
 npm run preview
+npm run format:domains
 ```
 
 ## Maintain Snapshots
@@ -104,11 +105,13 @@ make -C snapshot release
 Common maintenance entry points:
 
 - domain config: [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml)
-- snapshot version: [`snapshot/SNAPSHOT_VERSION`](snapshot/SNAPSHOT_VERSION)
+- snapshot version: `version` in [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml)
 - snapshot commands: [`snapshot/Makefile`](snapshot/Makefile)
 - pipeline code: [`snapshot/src/`](snapshot/src/cli.js)
 
-To add a domain, prefer `make -C snapshot add <domain>`. If the hostname belongs under an existing parent domain, it is appended as a sorted subdomain entry; otherwise it is inserted as a new sorted parent domain. The command also normalizes hostnames and rejects duplicates before rewriting [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml). For more complex edits, you can still update that file manually. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
+To add a domain, prefer `make -C snapshot add <domain>`. If the hostname belongs under an existing parent domain, it is appended as a sorted subdomain entry; otherwise it is inserted as a new sorted parent domain. The command also normalizes hostnames and rejects duplicates before rewriting [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml). When snapshot content changes, review and bump that file's `version` field in the same edit. For more complex edits, you can still update that file manually. Run `make check` before opening the PR if you want to validate the same local checks enforced in CI.
+
+Use `npm run format:domains` to rewrite [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml) into the repository's canonical YAML style. `make check` also verifies that the file is already formatted.
 
 The published snapshot repository at [favicons](https://github.com/favicon-catalog/favicons) is an artifact endpoint. Its published `README.md` is copied from [snapshot/README.md](snapshot/README.md), and its published license is copied from the repository root [LICENSE](LICENSE).
 
@@ -116,7 +119,7 @@ Snapshot release model:
 
 - source pipeline under `snapshot/`
 - published artifacts in `favicon-catalog/favicons`
-- snapshot version owned by [`snapshot/SNAPSHOT_VERSION`](snapshot/SNAPSHOT_VERSION)
+- snapshot version owned by the `version` field in [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml)
 
 ## CI/CD Workflows
 
@@ -129,7 +132,7 @@ When you open or update a Pull Request, the **Validate** workflow runs automatic
 - **Snapshot Validation:** Runs snapshot-specific checks equivalent to `make -C snapshot validate` and `make -C snapshot test`.
 - **Version Policy Enforcement:** Ensures proper version tracking based on what you modified:
   - Changes to the catalog site (`site/` or `vite.config.js`) require a version bump in `package.json`.
-  - Changes to snapshot data (`snapshot/input/domains.yaml`, `snapshot/src/`, etc.) require a version bump in `snapshot/SNAPSHOT_VERSION`.
+  - Changes to snapshot data (`snapshot/input/domains.yaml`, `snapshot/src/`, etc.) require a version bump in the `version` field of `snapshot/input/domains.yaml`.
 
 ```mermaid
 flowchart TD
@@ -145,7 +148,7 @@ Once your Pull Request is approved and merged into the `main` branch (or code is
 
 - **Final Validation:** Runs the site build and snapshot validation checks again to ensure the `main` branch remains stable.
 - **Site Deployment:** The **Deploy** workflow builds the static catalog site and publishes it directly to [GitHub Pages](https://favicon-catalog.github.io/).
-- **Snapshot Publishing:** The **Publish** workflow checks the current `snapshot/SNAPSHOT_VERSION`. If that version tag hasn't been published yet to the external [`favicon-catalog/favicons`](https://github.com/favicon-catalog/favicons) repository, it generates the new snapshot artifacts and creates a new release automatically. (Publishing can also be triggered manually via `workflow_dispatch` if needed).
+- **Snapshot Publishing:** The **Publish** workflow checks the current `version` field in [`snapshot/input/domains.yaml`](snapshot/input/domains.yaml). If that version tag hasn't been published yet to the external [`favicon-catalog/favicons`](https://github.com/favicon-catalog/favicons) repository, it generates the new snapshot artifacts and creates a new release automatically. (Publishing can also be triggered manually via `workflow_dispatch` if needed).
 
 ```mermaid
 flowchart TD

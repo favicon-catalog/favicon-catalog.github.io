@@ -14,6 +14,7 @@ import {
   PREFERENCE_ORDER,
   VALID_DISCOVERY_ORIGINS,
 } from "./config.js";
+import { parseSnapshotInputDocument } from "./input-file.js";
 import { buildIndexMetadata, writeIndexMetadataFile } from "./index-metadata.js";
 import { formatManifestJson, utcTimestamp } from "./json.js";
 import { domainPrefixDir, relativeFolderPath, targetFolder } from "./layout.js";
@@ -262,14 +263,23 @@ export function parseDomainConfig(value) {
 export async function validateInputFile(inputPath = DEFAULT_DOMAINS_FILE) {
   const text = await fs.readFile(inputPath, "utf8");
   const parsed = YAML.parse(text);
-  const result = parseDomainConfig(parsed);
+  const snapshotInput = parseSnapshotInputDocument(parsed);
+  const result = snapshotInput.domains === null
+    ? { domains: [], entries: [], groups: [], groupLabels: new Map(), issues: [] }
+    : parseDomainConfig(snapshotInput.domains);
+  result.issues = [...snapshotInput.issues, ...result.issues];
   return [result.domains, result.issues, result];
 }
 
 async function readInputDomainTree(inputPath) {
   const text = await fs.readFile(inputPath, "utf8");
   const parsed = YAML.parse(text);
-  return parseDomainConfig(parsed);
+  const snapshotInput = parseSnapshotInputDocument(parsed);
+  const result = snapshotInput.domains === null
+    ? { domains: [], entries: [], groups: [], groupLabels: new Map(), issues: [] }
+    : parseDomainConfig(snapshotInput.domains);
+  result.issues = [...snapshotInput.issues, ...result.issues];
+  return result;
 }
 
 function normalizeRel(value) {
